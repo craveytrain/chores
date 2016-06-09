@@ -7,8 +7,12 @@ export default React.createClass({
     render: function() {
         return <ul className="chores">
 			{this.getChores().map(chore =>
-				<li key={chore.id}>{chore.name}</li>
+				<li key={chore.id}>
+					{chore.name}
+					<button onClick={() => this.props}>Delete</button>
+				</li>
 			)}
-        </ul>;
+        </ul>
+		{<p><input type="text" class="addChore" /></p>};
     }
 });

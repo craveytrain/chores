@@ -29,4 +29,24 @@ describe('Chores', () => {
 
     });
 
+	it('invokes callback when the delete button is clicked', () => {
+		let deleted;
+
+		const delete = (chore) => deleted = chore;
+
+		const component = renderIntoDocument(
+			<Chores chores={[
+				{
+					id: 'makeBed',
+					name: 'Make bed'
+				},
+				{
+					id: 'clearTable',
+					name: 'Clear table'
+				}
+			]} />
+		);
+
+	});
+
 });
