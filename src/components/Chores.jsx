@@ -5,14 +5,11 @@ export default React.createClass({
         return this.props.chores || [];
     },
     render: function() {
-        return <ul className="chores">
-			{this.getChores().map(chore =>
-				<li key={chore.id}>
-					{chore.name}
-					<button onClick={() => this.props}>Delete</button>
-				</li>
-			)}
+        return <ul className='chores'>
+            {this.getChores().map(chore => <li key={chore.id}>
+                {chore.name}
+                <button onClick={() => this.props.delete(chore)}>Delete</button>
+            </li>)}
         </ul>
-		{<p><input type="text" class="addChore" /></p>};
     }
 });
