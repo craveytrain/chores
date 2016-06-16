@@ -43,4 +43,20 @@ describe('Chores', () => {
 
         expect(toDelete).to.equal(fixtureChore);
     });
+
+    xit('invokes callback when the add chore is submitted', () => {
+        let toAdd;
+        const fixtureChore = 'New Chore';
+
+        const added = chore => toAdd = chore;
+
+        const component = renderIntoDocument(<Chores chores={[]} add={added}/>);
+
+        const form = scryRenderedDOMComponentsWithTag(component, 'form');
+        // const input = findRenderedDOMComponentWithTag(form, 'input');
+
+        Simulate.submit(form[0]);
+
+        expect(toAdd).to.equal(fixtureChore);
+    });
 });
