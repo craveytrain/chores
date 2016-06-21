@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {renderIntoDocument, scryRenderedDOMComponentsWithTag, Simulate} from 'react-addons-test-utils';
 import {expect} from 'chai';
+import {List} from 'immutable';
 
 import Chores from '../../src/components/Chores';
 
 describe('Chores', () => {
     it('renders a list of chores', () => {
-
         const component = renderIntoDocument(<Chores chores={[
             {
                 id: 'makeBed',
@@ -23,7 +23,6 @@ describe('Chores', () => {
         expect(listItems.length).to.equal(2);
         expect(listItems[0].textContent).to.contain('Make bed');
         expect(listItems[1].textContent).to.contain('Clear table');
-
     });
 
     it('invokes callback when the delete button is clicked', () => {
@@ -58,5 +57,51 @@ describe('Chores', () => {
         Simulate.submit(form[0]);
 
         expect(toAdd).to.equal(fixtureChore);
+    });
+
+    it('renders as a pure component', () => {
+        const container = document.createElement('div');
+
+        const chores = [
+            {
+                id: 'makeBed',
+                name: 'Make bed'
+            }
+        ];
+        let component = ReactDOM.render(<Chores chores={chores}/>, container);
+
+        let firstListItem = scryRenderedDOMComponentsWithTag(component, 'li')[0];
+        expect(firstListItem.textContent).to.contain('Make bed');
+
+        chores[0] = {
+            id: 'clearTable',
+            name: 'Clear table'
+        };
+        component = ReactDOM.render(<Chores chores={chores}/>, container);
+
+        firstListItem = scryRenderedDOMComponentsWithTag(component, 'li')[0];
+        expect(firstListItem.textContent).to.contain('Make bed');
+    });
+
+    it('does update DOM when prop changes', () => {
+        const container = document.createElement('div');
+
+        const chores = List.of({
+            id: 'makeBed',
+            name: 'Make bed'
+        });
+        let component = ReactDOM.render(<Chores chores={chores}/>, container);
+
+        let firstListItem = scryRenderedDOMComponentsWithTag(component, 'li')[0];
+        expect(firstListItem.textContent).to.contain('Make bed');
+
+        const newChores = chores.set(0, {
+            id: 'clearTable',
+            name: 'Clear table'
+        })
+        component = ReactDOM.render(<Chores chores={newChores}/>, container);
+
+        firstListItem = scryRenderedDOMComponentsWithTag(component, 'li')[0];
+        expect(firstListItem.textContent).to.contain('Clear table');
     });
 });
