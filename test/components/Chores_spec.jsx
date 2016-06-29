@@ -44,19 +44,16 @@ describe('Chores', () => {
     });
 
     xit('invokes callback when the add chore is submitted', () => {
-        let toAdd;
-        const fixtureChore = 'New Chore';
+        let added = false;
+        const add = () => added = true;
 
-        const added = chore => toAdd = chore;
-
-        const component = renderIntoDocument(<Chores chores={[]} add={added}/>);
+        const component = renderIntoDocument(<Chores chores={[]} add={add}/>);
 
         const form = scryRenderedDOMComponentsWithTag(component, 'form');
-        // const input = findRenderedDOMComponentWithTag(form, 'input');
 
         Simulate.submit(form[0]);
 
-        expect(toAdd).to.equal(fixtureChore);
+        expect(added).to.equal(true);
     });
 
     it('renders as a pure component', () => {
