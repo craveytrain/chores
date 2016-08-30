@@ -1,14 +1,39 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Router, Route, hashHistory} from 'react-router';
+import { render } from 'react-dom';
+import { createStore, bindActionCreators } from 'redux';
+import reducer from './reducer';
+import { Provider, connect } from 'react-redux';
+// import io from 'socket.io-client';
 import App from './components/App';
-import Chores from './components/Chores';
 
-const routes = <Route component={App}>
-    <Route path="/" component={Chores}/>
-</Route>;
+// const store = createStore( reducer );
+const store = createStore( reducer, window.devToolsExtension && window.devToolsExtension() );
 
-ReactDOM.render(
-    <Router history={hashHistory}>{routes}</Router>,
-	document.getElementById('app')
+// const socket = io(`${location.protocol}//${location.hostname}:8090`);
+// socket.on( 'state', state => store.dispatch( { type: 'SET_STATE', state } ) );
+
+// const routes = <Route component={App}>
+//     <Route path="/" component={ChoresContainer}/>
+// </Route>;
+
+// import {ChoresContainer} from './Chores';
+
+
+
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('app')
 );
+
+
+
+// TODO: Dummy data
+import actions from './actions';
+store.dispatch( actions.setChores( [
+    "Make bed",
+    "Clear table",
+    "Set table",
+    "Help with trash"
+] ) );
