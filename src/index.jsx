@@ -1,13 +1,23 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, bindActionCreators } from 'redux';
-import reducer from './reducer';
+import reducer from './reducers';
 import { Provider, connect } from 'react-redux';
 // import io from 'socket.io-client';
 import App from './components/App';
 
 // const store = createStore( reducer );
-const store = createStore( reducer, window.devToolsExtension && window.devToolsExtension() );
+
+const initialState = {
+    chores: [
+        "Make bed",
+        "Clear table",
+        "Set table",
+        "Help with trash"
+    ]
+};
+
+const store = createStore( reducer, initialState, window.devToolsExtension && window.devToolsExtension() );
 
 // const socket = io(`${location.protocol}//${location.hostname}:8090`);
 // socket.on( 'state', state => store.dispatch( { type: 'SET_STATE', state } ) );
@@ -26,14 +36,3 @@ render(
     </Provider>,
     document.getElementById('app')
 );
-
-
-
-// TODO: Dummy data
-import actions from './actions';
-store.dispatch( actions.setChores( [
-    "Make bed",
-    "Clear table",
-    "Set table",
-    "Help with trash"
-] ) );

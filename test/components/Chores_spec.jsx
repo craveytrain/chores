@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { renderIntoDocument, scryRenderedDOMComponentsWithTag, Simulate } from 'react-addons-test-utils';
 import { expect } from 'chai';
-import { List } from 'immutable';
 
 import { Chores } from '../../src/components/Chores';
 
@@ -55,28 +54,10 @@ describe( 'Chores', () => {
         let firstListItem = scryRenderedDOMComponentsWithTag( component, 'li' )[ 0 ];
         expect( firstListItem.textContent ).to.contain( 'Make bed' );
 
-        // change value but it shouldn't change cause the list is mutated and that's not pure
+        // change value but it shouldn't change cause the list is mutated and that's impure
         chores[ 0 ] = 'Clear table';
         component = ReactDOM.render( <Chores chores={chores}/>, container );
         firstListItem = scryRenderedDOMComponentsWithTag( component, 'li' )[ 0 ];
         expect( firstListItem.textContent ).to.contain( 'Make bed' );
-    });
-
-    it( 'does update DOM when prop changes', () => {
-        const container = document.createElement( 'div' );
-
-        const chores = List.of( 'Make bed' );
-
-        let component = ReactDOM.render( <Chores chores={chores}/>, container );
-
-        let firstListItem = scryRenderedDOMComponentsWithTag( component, 'li' )[ 0 ];
-        expect( firstListItem.textContent ).to.contain( 'Make bed' );
-
-        const newChores = chores.set( 0, 'Clear table' );
-
-        component = ReactDOM.render( <Chores chores={newChores}/>, container );
-
-        firstListItem = scryRenderedDOMComponentsWithTag( component, 'li' )[ 0 ];
-        expect( firstListItem.textContent ).to.contain( 'Clear table' );
     });
 });

@@ -18,8 +18,8 @@ export const Chores = React.createClass({
 
 function mapStateToProps(state) {
     return {
-        chores: state.get('chores')
+        chores: state.chores
     };
 }
 
-export const ChoresContainer = connect( mapStateToProps, actions )(Chores);
+export const ChoresContainer = connect( mapStateToProps, actions )( Chores );
