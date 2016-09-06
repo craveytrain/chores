@@ -1,9 +1,11 @@
 import React from 'react';
-import Chores from './Chores';
+// import Chores from './Chores';
+import Day from './Day';
 
 const App = () => (
   <div>
-      <Chores />
+      {/*}<Chores /> */}
+      <Day />
   </div>
 );
 
