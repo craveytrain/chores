@@ -4,7 +4,11 @@ import { createStore } from 'redux';
 import reducer from './reducers';
 import { Provider } from 'react-redux';
 // import io from 'socket.io-client';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import App from './components/App';
+
+injectTapEventPlugin();
 
 // const store = createStore( reducer );
 

@@ -1,15 +1,26 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { toggleChore, removeChore } from '../../actions/chores';
+import { List, ListItem } from 'material-ui/List';
+import ToggleStar from 'material-ui/svg-icons/toggle/star';
+import ToggleStarBorder from 'material-ui/svg-icons/toggle/star-border';
+import Checkbox from 'material-ui/Checkbox';
+// import FlatButton from 'material-ui/FlatButton';
+// import { toggleChore, removeChore } from '../../actions/chores';
+import { toggleChore } from '../../actions/chores';
 
 export const ChoresList = ( { chores, onChoreClick, onRemoveChoreClick } ) => (
-    <ul>
-        { chores.map( (chore, index) => <li key={ chore.id }>
-            { chore.name }
-            <input type="checkbox" onClick={ () => onChoreClick( chore.id ) } />
-            <button onClick={ () => onRemoveChoreClick( chore.id ) }>Remove</button>
-        </li>) }
-    </ul>
+    <List>
+        { chores.map( chore =>
+                <ListItem key={chore.id}>
+                    <Checkbox
+      label={chore.name}
+      checkedIcon={<ToggleStar />}
+      uncheckedIcon={<ToggleStarBorder />}
+      labelPosition="left"
+       onClick={ () => onChoreClick( chore.id ) }
+    /></ListItem>
+        ) }
+    </List>
 );
 
 ChoresList.propTypes = {

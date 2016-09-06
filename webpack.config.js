@@ -1,4 +1,6 @@
-var webpack = require( 'webpack' );
+const path = require('path');
+const webpack = require( 'webpack' );
+const TransferWebpackPlugin = require('transfer-webpack-plugin');
 
 module.exports = {
     entry: [
@@ -7,25 +9,36 @@ module.exports = {
       './src/index'
     ],
     module: {
-        loaders: [ {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loaders: [ 'react-hot', 'babel' ]
-    } ]
+        loaders: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loaders: [ 'react-hot', 'babel' ]
+            }
+        ]
     },
     resolve: {
         extensions: [ '', '.js' ]
     },
     output: {
-        path: __dirname + '/dest',
+        path: path.resolve( __dirname, 'dest' ),
         publicPath: '/static/',
         filename: 'bundle.js'
     },
     devServer: {
-        contentBase: './dest',
-        hot: true
+        contentBase: './src/public',
+        inline: true,
+        hot: true,
+        port: 8080,
+        host: 'localhost'
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new TransferWebpackPlugin(
+            [
+                { from: 'public' },
+            ],
+            path.resolve( __dirname, 'src' )
+        ),
   ]
 };
