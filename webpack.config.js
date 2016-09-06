@@ -8,17 +8,17 @@ module.exports = {
     ],
     module: {
         loaders: [ {
-            test: /\.jsx?$/,
+            test: /\.js$/,
             exclude: /node_modules/,
             loaders: [ 'react-hot', 'babel' ]
     } ]
     },
     resolve: {
-        extensions: [ '', '.js', '.jsx' ]
+        extensions: [ '', '.js' ]
     },
     output: {
         path: __dirname + '/dest',
-        publicPath: '/',
+        publicPath: '/static/',
         filename: 'bundle.js'
     },
     devServer: {

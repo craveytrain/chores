@@ -2,52 +2,108 @@ import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
 
 import reducer from '../../src/reducers/chores';
-import actions from '../../src/actions';
-
+import { setChores, addChore, removeChore, toggleChore } from '../../src/actions/chores';
 
 describe( 'chores reducer', () => {
     it( 'handles SET_CHORES', () => {
-        const nextState = reducer( undefined, actions.setChores( [  'Make bed' ] ) );
+        const nextState = reducer( undefined, setChores( [ {
+            name: 'Clear table',
+            id: 'clear-table',
+            completed: false
+        } ] ) );
 
-        expect( nextState ).to.deep.equal( [ 'Make bed' ] );
+        expect( nextState ).to.deep.equal( [ {
+            name: 'Clear table',
+            id: 'clear-table',
+            completed: false
+        } ] );
     } );
 
     it( 'handles ADD_CHORE', () => {
-        const initialState = [ 'Clear table' ];
+        const initialState = [ {
+            name: 'Clear table',
+            id: 'clear-table',
+            completed: false
+        } ];
         deepFreeze(initialState);
 
-        const nextState = reducer( initialState, actions.addChore( 'Make bed' ) );
+        const nextState = reducer( initialState, addChore( 'Make bed' ) );
 
-        expect( nextState ).to.deep.equal( [ 'Clear table', 'Make bed' ] );
+        expect( nextState ).to.deep.equal( [
+            {
+                name: 'Clear table',
+                id: 'clear-table',
+                completed: false
+            },
+            {
+                name: 'Make bed',
+                id: 'make-bed',
+                completed: false
+            }
+        ] );
 
     } );
 
     it( 'handles REMOVE_CHORE', () => {
-        const initialState = [ 'Make bed', 'Clear table' ];
+        const initialState = [
+            {
+                name: 'Clear table',
+                id: 'clear-table',
+                completed: false
+            },
+            {
+                name: 'Make bed',
+                id: 'make-bed',
+                completed: false
+            }
+        ];
         deepFreeze(initialState);
 
-        const nextState = reducer( initialState, actions.removeChore( 0 ) );
+        const nextState = reducer( initialState, removeChore( 'make-bed' ) );
 
-        expect( nextState ).to.deep.equal( [ 'Clear table' ] );
+        expect( nextState ).to.deep.equal( [ {
+            name: 'Clear table',
+            id: 'clear-table',
+            completed: false
+        } ] );
+    } );
+
+    it( 'handles TOGGLE_CHORE', () => {
+        const initialState = [ {
+            name: 'Clear table',
+            id: 'clear-table',
+            completed: false
+        } ];
+        deepFreeze(initialState);
+
+        const nextState = reducer( initialState, toggleChore( 'clear-table' ) );
+
+        expect( nextState ).to.deep.equal( [
+            {
+                name: 'Clear table',
+                id: 'clear-table',
+                completed: true
+            }
+        ] );
     } );
 
     it( 'can be used with reduce', () => {
         const actionQueue = [
-            {
-                type: 'SET_CHORES',
-                chores: [ 'Make bed' ]
-            },
-            {
-                type: 'ADD_CHORE',
-                name: 'Clean table'
-            },
-            {
-                type: 'REMOVE_CHORE',
-                index: 0
-            }
+            setChores( [ {
+                name: 'Make bed',
+                id: 'make-bed',
+                completed: false
+            } ] ),
+            addChore( 'Clear table' ),
+            toggleChore( 'clear-table' ),
+            removeChore( 'make-bed' )
       ];
         const finalState = actionQueue.reduce( reducer, [] );
 
-        expect( finalState ).to.deep.equal( [ 'Clean table' ] );
+        expect( finalState ).to.deep.equal( [ {
+            name: 'Clear table',
+            id: 'clear-table',
+            completed: true
+        } ] );
     } );
 } );
